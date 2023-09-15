@@ -1,0 +1,115 @@
+
+trigger:
+- dev
+
+# pool:
+#   vmImage: ubuntu-latest
+
+stages:
+- stage: Lint
+  displayName: 'Lint Stage'
+  jobs:
+  - job: Lint
+    displayName: 'Linting'
+    steps:
+    - script: |
+        echo "lint"
+        # Add linting commands here
+        # Example: npm run lint
+      displayName: 'Run Linting'
+
+- stage: UnitTest
+  displayName: 'Unit Test Stage'
+  jobs:
+  - job: UnitTest
+    displayName: 'Unit Testing'
+    steps:
+    - script: |
+      echo "unit test"
+        # Add unit testing commands here
+        # Example: npm test
+      displayName: 'Run Unit Tests'
+
+- stage: SonarQube
+  displayName: 'SonarQube Stage'
+  jobs:
+  - job: SonarQube
+    displayName: 'Static Code Analysis'
+    steps:
+    - script: |
+        # Add SonarQube analysis commands here
+        # Example: sonar-scanner
+      displayName: 'Run SonarQube Analysis'
+
+- stage: BuildImage
+  displayName: 'Build Image Stage'
+  jobs:
+  - job: BuildImage
+    displayName: 'Building Image'
+    steps:
+    - script: |
+        # docker build -t spring-boot-app .
+      displayName: 'Build Image'
+
+- stage: PushImage
+  displayName: 'Push Image to Registry'
+  jobs:
+  - job: PushImage
+    displayName: 'Pushing Image to Registry'
+    steps:
+    - script: |
+        # docker push haidyh/spring-boot-app:latest
+      displayName: 'Push Image'
+
+- stage: PullImage
+  displayName: 'Pull Image from Registry'
+  jobs:
+  - job: PullImage
+    displayName: 'Pulling Image from Registry'
+    steps:
+    - script: |
+        # docker pull haidyh/spring-boot-app:latest
+      displayName: 'Pull Image'
+
+- stage: DeployApp
+  displayName: 'Deploy Spring Boot App'
+  jobs:
+  - job: DeployApp
+    displayName: 'Deploying App to K8s Cluster'
+    steps:
+    - script: |
+      # kubectl apply -f deployment.yaml
+    displayName: 'Deploy App'
+
+- stage: CreateIngress
+  displayName: 'Create Ingress'
+  jobs:
+  - job: CreateIngress
+    displayName: 'Creating Ingress for the App'
+    steps:
+    - script: |
+        # Add ingress creation commands here
+        # Example: kubectl apply -f ingress.yaml
+      displayName: 'Create Ingress'
+
+- stage: DeployDev
+  displayName: 'Deploy on Development Environment'
+  jobs:
+  - job: DeployDev
+    displayName: 'Deploying to Development Environment'
+    steps:
+    - script: |
+        # Add deployment to development environment commands here
+        # Example: kubectl apply -f dev-deployment.yaml
+      displayName: 'Deploy to Development'
+
+- stage: DeployProd
+  displayName: 'Deploy on Production Environment'
+  jobs:
+  - job: DeployProd
+    displayName: 'Deploying to Production Environment'
+    steps:
+    - script: |
+        # Add deployment to production environment commands here
+        # Example: kubectl apply -f prod-deployment.yaml
+      displayName: 'Deploy to Production'
