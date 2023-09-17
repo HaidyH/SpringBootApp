@@ -187,5 +187,86 @@ using the deployment.yaml file in k8 directory
 
 but we need ingress to deploy the ingress we need service and ingress controller
 
-so lets deploy the ingress controller using helm chart 
+# so lets deploy the ingress controller using helm chart 
 
+# Step 1: Install helm 3 in our workstation
+
+Install helm 3 in your Workstation where Kubectl is installed and configured.
+
+```bash
+
+cd ~/
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+   ```
+check helm version
+
+```bash
+helm version
+![Screenshot 2023-09-17 221845](https://github.com/HaidyH/SpringBootApp/assets/83189705/cb3f13c1-5f09-4589-9893-2072b9798280)
+
+   ```
+
+
+
+# Step 2: Deploy Nginx Ingress Controller
+
+Download latest stable release of Nginx Ingress Controller code:
+
+```bash
+controller_tag=$(curl -s https://api.github.com/repos/kubernetes/ingress-nginx/releases/latest | grep tag_name | cut -d '"' -f 4)
+wget https://github.com/kubernetes/ingress-nginx/archive/refs/tags/${controller_tag}.tar.gz
+
+   ```
+Extract the file downloaded:
+
+
+```bash
+tar xvf ${controller_tag}.tar.gz
+
+   ```
+Switch to the directory created:
+
+```bash
+cd ingress-nginx-${controller_tag}
+
+   ```
+Change your working directory to charts folder:
+
+```bash
+cd charts/ingress-nginx/
+
+   ```
+Create namespace
+
+```bash
+kubectl create namespace ingress-nginx
+
+   ```
+Now deploy Nginx Ingress Controller using the following commands
+
+```bash
+helm install -n ingress-nginx ingress-nginx  -f values.yaml .
+   ```
+
+![Screenshot (8)](https://github.com/HaidyH/SpringBootApp/assets/83189705/b545114e-acee-422a-8e20-3a9818be00f1)
+
+```bash
+kubectl get all -n ingress-nginx
+   ```
+```bash
+kubectl get pods -n ingress-nginx
+   ```
+
+To check logs in the Pods use the commands:
+
+```bash
+kubectl -n ingress-nginx  logs deploy/ingress-nginx-controller
+   ```
+To follow logs as they stream run: 
+
+```bash
+kubectl -n ingress-nginx  logs deploy/ingress-nginx-controller -f
+   ```
