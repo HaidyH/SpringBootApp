@@ -13,9 +13,7 @@ stages:
     displayName: 'Linting'
     steps:
     - script: |
-        echo "lint"
-        # Add linting commands here
-        # Example: npm run lint
+        npm run lint
       displayName: 'Run Linting'
 
 - stage: UnitTest
@@ -26,8 +24,7 @@ stages:
     steps:
     - script: |
       echo "unit test"
-        # Add unit testing commands here
-        # Example: npm test
+        npm test
       displayName: 'Run Unit Tests'
 
 - stage: SonarQube
@@ -37,8 +34,7 @@ stages:
     displayName: 'Static Code Analysis'
     steps:
     - script: |
-        # Add SonarQube analysis commands here
-        # Example: sonar-scanner
+        sonar-scanner
       displayName: 'Run SonarQube Analysis'
 
 - stage: BuildImage
@@ -48,7 +44,7 @@ stages:
     displayName: 'Building Image'
     steps:
     - script: |
-        # docker build -t spring-boot-app .
+        docker build -t spring-boot-app .
       displayName: 'Build Image'
 
 - stage: PushImage
@@ -58,7 +54,8 @@ stages:
     displayName: 'Pushing Image to Registry'
     steps:
     - script: |
-        # docker push haidyh/spring-boot-app:latest
+        docker tag  spring-boot-app haidy/spring-boot-app:latest
+        docker push haidyh/spring-boot-app:latest
       displayName: 'Push Image'
 
 - stage: PullImage
@@ -68,7 +65,7 @@ stages:
     displayName: 'Pulling Image from Registry'
     steps:
     - script: |
-        # docker pull haidyh/spring-boot-app:latest
+        docker pull haidyh/spring-boot-app:latest
       displayName: 'Pull Image'
 
 - stage: DeployApp
@@ -78,7 +75,7 @@ stages:
     displayName: 'Deploying App to K8s Cluster'
     steps:
     - script: |
-      # kubectl apply -f deployment.yaml
+      kubectl apply -f k8/deployment.yaml
     displayName: 'Deploy App'
 
 - stage: CreateIngress
@@ -88,8 +85,8 @@ stages:
     displayName: 'Creating Ingress for the App'
     steps:
     - script: |
-        # Add ingress creation commands here
-        # Example: kubectl apply -f ingress.yaml
+        kubectl apply -f k8/svc.yaml
+        kubectl apply -f k8/ingress.yaml
       displayName: 'Create Ingress'
 
 - stage: DeployDev
@@ -99,8 +96,7 @@ stages:
     displayName: 'Deploying to Development Environment'
     steps:
     - script: |
-        # Add deployment to development environment commands here
-        # Example: kubectl apply -f dev-deployment.yaml
+        kubectl apply -f dev-deployment.yaml
       displayName: 'Deploy to Development'
 
 - stage: DeployProd
@@ -110,6 +106,5 @@ stages:
     displayName: 'Deploying to Production Environment'
     steps:
     - script: |
-        # Add deployment to production environment commands here
-        # Example: kubectl apply -f prod-deployment.yaml
+        kubectl apply -f prod-deployment.yaml
       displayName: 'Deploy to Production'

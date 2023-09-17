@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-app-deployment
+  name: dev-deployment
   namespace: ingress-nginx
 spec:
   replicas: 1

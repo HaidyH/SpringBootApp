@@ -1,0 +1,26 @@
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  creationTimestamp: "2023-09-17T20:37:12Z"
+  generation: 1
+  name: spring-boot-ingress
+  namespace: ingress-nginx
+  resourceVersion: "1075"
+  uid: 23e90d53-e067-4751-acd6-4de16d6c09d9
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: spring-boot-app-service
+            port:
+              number: 8080
+        path: /spring
+        pathType: Prefix
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.101.28.163
